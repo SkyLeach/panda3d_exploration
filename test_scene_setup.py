@@ -132,7 +132,7 @@ class TestGame(ShowBase):
         self.sky = 'starfield'
         self.starfield = self.loader.loadModel("models/starfield.egg")
         self.starfield.reparentTo(self.camera)
-        self.starfield.setScale(0.0015, 0.0015, 0.0015)
+        #self.starfield.setScale(0.0015, 0.0015, 0.0015)
         self.starfield.set_two_sided(True)
         self.starfield.set_bin("background", 0)
         self.starfield.set_depth_write(False)
