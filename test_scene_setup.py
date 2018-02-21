@@ -142,7 +142,6 @@ class TestGame(ShowBase):
         # The skybox part
         self.skybox = self.loader.loadModel("models/skybox_1024")
         self.skybox.reparentTo(self.camera)
-        #self.skybox.set_render_mode_wireframe()
         self.skybox.set_two_sided(True)
         self.skybox.set_bin("background", 0)
         self.skybox.set_depth_write(False)
