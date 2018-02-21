@@ -1,8 +1,8 @@
-#Panda3d Exploration
+# Panda3d Exploration
 
 This is a test/sample game using panda3d to explore gaming with python and open source tools.
 
-##principle tools
+## principle tools
 * Blender
 * YABEE (export to panda egg from blender)
 * Gimp (texture mapping)
