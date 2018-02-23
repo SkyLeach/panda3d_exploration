@@ -2,14 +2,17 @@
 import sys, os
 
 from math import pi, sin, cos
-
 import pprint
+
 
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import Sequence
 from panda3d.core import Point3
+
+#local imports
+from InteractiveConsole import pandaConsole, INPUT_CONSOLE, INPUT_GUI, OUTPUT_PYTHON, OUTPUT_IRC
 
 # TODO: move to settings
 cam_speed = 0.5
@@ -30,6 +33,7 @@ class TestGame(ShowBase):
     wiresky      = False
     surfdog      = None
     cannon       = None
+    console      = None
 
     def __init__(self):
         ShowBase.__init__(self)
@@ -106,6 +110,14 @@ class TestGame(ShowBase):
 
         self.accept("escape", sys.exit)
         self.taskMgr.add(self.update_camera, 'adjust camera', sort = 10)
+        self.console = pandaConsole(
+            INPUT_CONSOLE|INPUT_GUI|OUTPUT_PYTHON|OUTPUT_IRC,
+            locals()
+        )
+        self.console = pandaConsole(
+            INPUT_CONSOLE|INPUT_GUI|OUTPUT_PYTHON,
+            locals()
+        )
 
     def adjust_turning(self, heading, pitch):
         self.adjust_angle += heading
@@ -132,7 +144,7 @@ class TestGame(ShowBase):
 
     # Define a procedure to move the camera.
     def spinCameraTask(self, task):
-        angleDegrees = task.time * 6.0 * cam_speed
+        angleDegrees = task.time * 6.0
         angleRadians = angleDegrees * (pi / 180.0)
         self.camera.setPos(20 * sin(angleRadians), -20.0 * cos(angleRadians), 3)
         self.camera.setHpr(angleDegrees, 0, 0)
@@ -183,6 +195,14 @@ class TestGame(ShowBase):
             self.skybox.show()
             self.starfield.hide()
             self.sky = 'skybox'
+
+#     def toggle_console(self):
+#         if self.console.is_hidden():
+#             self.console.show()
+#             base.silenceInput()
+#         else:
+#             self.console.hide()
+#             base.reviveInput()
 
 if __name__ == '__main__':
     app = TestGame()
