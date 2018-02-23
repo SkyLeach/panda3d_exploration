@@ -12,7 +12,7 @@ from direct.interval.IntervalGlobal import Sequence
 from panda3d.core import Point3
 
 # TODO: move to settings
-cam_speed = 0.2
+cam_speed = 0.5
 
 class TestGame(ShowBase):
     """TestGame
@@ -27,7 +27,9 @@ class TestGame(ShowBase):
     adjust_angle = 0
     adjust_pitch = 0
     last_time    = 0.0
-    wiresky = False
+    wiresky      = False
+    surfdog      = None
+    cannon       = None
 
     def __init__(self):
         ShowBase.__init__(self)
@@ -40,8 +42,16 @@ class TestGame(ShowBase):
         self.surfdog.setScale(5.0, 0.1, 5.0)
         self.surfdog.setPos(-8, 22, -2)
 
+        self.cannon = self.loader.loadModel("models/cannon")
+        #self.cannon.setScale(4,4,4)
+        self.cannon.reparentTo(self.render)
+#        self.cannon.set_two_sided(True)
+        self.cannon.setPos(0, 22, 0)
+        self.cannon.setH(-45)
+
         # Add the spinCameraTask procedure to the task manager
         # self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
+        self.taskMgr.add(self.spinCannonTask, "SpinCannonTask")
 
         self.loadStarfield()
         self.loadSkybox()
@@ -122,10 +132,16 @@ class TestGame(ShowBase):
 
     # Define a procedure to move the camera.
     def spinCameraTask(self, task):
-        angleDegrees = task.time * 6.0
+        angleDegrees = task.time * 6.0 * cam_speed
         angleRadians = angleDegrees * (pi / 180.0)
         self.camera.setPos(20 * sin(angleRadians), -20.0 * cos(angleRadians), 3)
         self.camera.setHpr(angleDegrees, 0, 0)
+        return Task.cont
+
+    def spinCannonTask(self, task):
+        angleDegrees = task.time * 6.0
+        angleRadians = angleDegrees * (pi / 180.0)
+        self.cannon.setH(angleDegrees)
         return Task.cont
 
     def loadStarfield(self):
