@@ -23,20 +23,18 @@ from .irc      import ircClientClass
 from .console  import customConsoleClass
 
 class pandaConsole():
-  parent = None
   def __init__( self,
       interfaces=INPUT_GUI|INPUT_CONSOLE|OUTPUT_PYTHON|OUTPUT_IRC,
-      localsEnv=globals,
-      parent=None):
+      localsEnv=globals):
     self.guiEnabled     = (interfaces & INPUT_GUI)
     self.consoleEnabled = (interfaces & INPUT_CONSOLE)
     self.pythonEnabled  = (interfaces & OUTPUT_PYTHON)
     self.ircEnabled     = (interfaces & OUTPUT_IRC)
 
     if self.guiEnabled:
-      self.panda3dConsole = panda3dIOClass( parent )
+      self.panda3dConsole = panda3dIOClass(self)
     if self.consoleEnabled:
-      self.terminalConsole = consoleIOClass( parent )
+      self.terminalConsole = consoleIOClass(self)
 
     if self.pythonEnabled:
       self.customInteractiveConsole = customConsoleClass( localsEnv )
